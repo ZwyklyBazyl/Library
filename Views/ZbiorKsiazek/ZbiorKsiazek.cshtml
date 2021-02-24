@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Library1.Context.Ksiazka>
+@{
+    ViewBag.Title = "Zbiór Książek";
+}
+
+<h2>Zbiór Książek</h2>
+
+<br />
+<br />
+
+<a href="@Url.Action("Ksiazka", "Ksiazka")" class="btn btn-primary">Dodaj książkę</a>
+
+<br />
+<br />
+
+@{
+    if (ViewBag.Deleted == true)
+    {
+        <p class="text-warning">Książka usunięta!</p>
+        <br />
+        <br />
+    }
+
+    if (ViewBag.Returned == true)
+    {
+        <p class="text-success">Książka zwrócona!</p>
+        <br />
+        <br />
+    }
+
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Tytuł książki")
+            </th>
+            <th>
+                @Html.DisplayName("Autor książki")
+            </th>
+            <th>
+                @Html.DisplayName("Stan książki")
+            </th>
+            <th>
+                @Html.DisplayName("Wypożyczający")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nazwa_Ksiazki)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Autor_Ksiazki)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StanKsiazki.Stan_Ksiazki)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Wypozyczajacy.Fullname)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Ksiazka", "Ksiazka", item)">Edytuj</a> |
+                        @Html.ActionLink("Zwróć", "Zwroc", item) |
+                        @Html.ActionLink("Usuń", "Usun", item)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

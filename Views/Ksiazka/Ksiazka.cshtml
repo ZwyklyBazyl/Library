@@ -1,0 +1,47 @@
+﻿@model Library1.Context.Ksiazka
+
+@{
+    ViewBag.Title = "Ksiazka";
+}
+
+@{
+    if (ViewBag.Added == true)
+    {
+        <p class="text-success">Książka dodana!</p>
+    }
+    if (ViewBag.Modified == true)
+    {
+        <p class="text-success">Książka zmodyfikowana!</p>
+    }
+}
+
+@using (Html.BeginForm("AddKsiazka", "Ksiazka", FormMethod.Post))
+{
+    <div class="container">
+        <div class="form-group">
+            @Html.HiddenFor(x => x.ID_Ksiazki)
+            <label>Tytuł książki</label>
+            @Html.TextBoxFor(x => x.Nazwa_Ksiazki, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Autor książki</label>
+            @Html.TextBoxFor(x => x.Autor_Ksiazki, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Wypożyczający książkę</label>
+            @Html.DropDownListFor(x => x.ID_Wypozyczajacego, new SelectList(ViewBag.data, "ID_Wypozyczajacego", "FullName"), "Wybierz wypożyczającego")
+        </div>
+
+        <div class="form-group">
+            @if (Model != null && Model.ID_Ksiazki != 0)
+            {
+                <button type="submit" class="btn btn-primary">Zmodyifkuj książkę</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary">Dodaj książkę</button>
+            }
+        </div>
+    </div>
+}
+

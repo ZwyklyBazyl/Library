@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BibliotekaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Ksiazka">
+    <Key>
+      <PropertyRef Name="ID_Ksiazki" />
+    </Key>
+    <Property Name="ID_Ksiazki" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nazwa_Ksiazki" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Autor_Ksiazki" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ID_StanuKsiazki" Type="Int32" Nullable="false" />
+    <Property Name="ID_Wypozyczajacego" Type="Int32" />
+    <NavigationProperty Name="StanKsiazki" Relationship="Self.FK_Ksiazka_StanKsiazki" FromRole="Ksiazka" ToRole="StanKsiazki" />
+    <NavigationProperty Name="Wypozyczajacy" Relationship="Self.FK_Ksiazka_Wypozyczajacy" FromRole="Ksiazka" ToRole="Wypozyczajacy" />
+  </EntityType>
+  <EntityType Name="StanKsiazki">
+    <Key>
+      <PropertyRef Name="ID_StanuKsiazki" />
+    </Key>
+    <Property Name="ID_StanuKsiazki" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Stan_Ksiazki" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Ksiazkas" Relationship="Self.FK_Ksiazka_StanKsiazki" FromRole="StanKsiazki" ToRole="Ksiazka" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Wypozyczajacy">
+    <Key>
+      <PropertyRef Name="ID_Wypozyczajacego" />
+    </Key>
+    <Property Name="ID_Wypozyczajacego" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Imie_Wypozyczajacego" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Nazwisko_Wypozyczajacego" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Telefon_Wypozyczajacego" Type="Int32" />
+    <NavigationProperty Name="Ksiazkas" Relationship="Self.FK_Ksiazka_Wypozyczajacy" FromRole="Wypozyczajacy" ToRole="Ksiazka" />
+  </EntityType>
+  <Association Name="FK_Ksiazka_StanKsiazki">
+    <End Role="StanKsiazki" Type="Self.StanKsiazki" Multiplicity="1" />
+    <End Role="Ksiazka" Type="Self.Ksiazka" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StanKsiazki">
+        <PropertyRef Name="ID_StanuKsiazki" />
+      </Principal>
+      <Dependent Role="Ksiazka">
+        <PropertyRef Name="ID_StanuKsiazki" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Ksiazka_Wypozyczajacy">
+    <End Role="Wypozyczajacy" Type="Self.Wypozyczajacy" Multiplicity="0..1" />
+    <End Role="Ksiazka" Type="Self.Ksiazka" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Wypozyczajacy">
+        <PropertyRef Name="ID_Wypozyczajacego" />
+      </Principal>
+      <Dependent Role="Ksiazka">
+        <PropertyRef Name="ID_Wypozyczajacego" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BibliotekaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Ksiazkas" EntityType="Self.Ksiazka" />
+    <EntitySet Name="StanKsiazkis" EntityType="Self.StanKsiazki" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Wypozyczajacies" EntityType="Self.Wypozyczajacy" />
+    <AssociationSet Name="FK_Ksiazka_StanKsiazki" Association="Self.FK_Ksiazka_StanKsiazki">
+      <End Role="StanKsiazki" EntitySet="StanKsiazkis" />
+      <End Role="Ksiazka" EntitySet="Ksiazkas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Ksiazka_Wypozyczajacy" Association="Self.FK_Ksiazka_Wypozyczajacy">
+      <End Role="Wypozyczajacy" EntitySet="Wypozyczajacies" />
+      <End Role="Ksiazka" EntitySet="Ksiazkas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

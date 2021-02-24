@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Library1.Context.Wypozyczajacy>
+@{
+    ViewBag.Title = "Zbiór Wypożyczających";
+}
+
+<h2>Zbiór Wypożyczających</h2>
+
+<br />
+<br />
+
+<a href="@Url.Action("Wypozyczajacy", "Wypozyczajacy")" class="btn btn-primary">Dodaj Wypożyczającego</a>
+
+<br />
+<br />
+
+@{
+    if (ViewBag.Deleted == true)
+    {
+        <p class="text-warning">Wypożyczający usunięty!</p>
+        <br />
+        <br />
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Imię")
+            </th>
+            <th>
+                @Html.DisplayName("Nazwisko")
+            </th>
+            <th>
+                @Html.DisplayName("Telefon")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Imie_Wypozyczajacego)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nazwisko_Wypozyczajacego)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefon_Wypozyczajacego)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Wypozyczajacy", "Wypozyczajacy", item)">Edytuj</a> |
+                        @Html.ActionLink("Usuń", "Usun", item)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

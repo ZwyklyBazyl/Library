@@ -1,0 +1,96 @@
+﻿@model Library1.Context.Wypozyczajacy
+
+@{
+    ViewBag.Title = "Wypożyczający";
+}
+
+@{
+    if (ViewBag.Added == true)
+    {
+        <p class="text-success">Wypożyczający dodany!</p>
+    }
+    if (ViewBag.Modified == true)
+    {
+        <p class="text-success">Wypożyczający zmodyfikowany!</p>
+    }
+    if (ViewBag.Returned == true)
+    {
+        <p class="text-success">Książka zwrócona!</p>
+    }
+}
+
+@using (Html.BeginForm("AddWypozyczajacy", "Wypozyczajacy", FormMethod.Post))
+{
+    <div class="container">
+        <div class="form-group">
+            @Html.HiddenFor(x => x.ID_Wypozyczajacego)
+            <label>Imię wypożyczającego</label>
+            @Html.TextBoxFor(x => x.Imie_Wypozyczajacego, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Nazwisko wypożyczającego</label>
+            @Html.TextBoxFor(x => x.Nazwisko_Wypozyczajacego, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Numer tel. wypożyczającego</label>
+            @Html.TextBoxFor(x => x.Telefon_Wypozyczajacego, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @if (Model != null && Model.ID_Wypozyczajacego != 0)
+            {
+                <button type="submit" class="btn btn-primary">Zmodyifkuj Wypożyczającego</button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-primary">Dodaj Wypożyczającego</button>
+            }
+
+            @if (Model != null && Model.ID_Wypozyczajacego != 0)
+            {
+                <br />
+                <br />
+                <h1>Wypożyczone książki</h1>
+                <br />
+                <br />
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayName("Tytuł książki")
+                            </th>
+                            <th>
+                                @Html.DisplayName("Autor książki")
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Ksiazki != null)
+                        {
+                            foreach (Library1.Context.Ksiazka item in ViewBag.Ksiazki)
+                            {
+                                if (item.ID_Wypozyczajacego == Model.ID_Wypozyczajacego)
+                                {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nazwa_Ksiazki)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Autor_Ksiazki)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Zwróć", "Zwroc", item)
+                                    </td>
+                                </tr>
+                                }
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+}
